@@ -6,8 +6,7 @@ date: "2025-03-12"
 echo: False
 css: styles.css
 
-format:
-    pdf: default
+format: pdf
 
 # format: revealjs #rendering presentation
 ---
@@ -182,7 +181,35 @@ Some more random text here
 ### A third subtitle
 
 ::: {layout="[[30, 70], [100]]"}
+
 This is a test about line up pictures next to text. This is a test about line up pictures next to text. This is a test about line up pictures next to text.
 
-![Alt text](Coach%20Example/pics/plot_boxplot.png){fig-align="right" width="576"}
+![Alt text](Coach%20Example/pics/plot_boxplot.png){fig-align="right" width="400"}
+
 :::
+
+
+### Python Testing
+```{python}
+#| echo: true
+test = 'PYTHON TESTING'
+print(test)
+```
+
+
+Python Inline Example
+
+```{python}
+import pandas as pd
+
+# Example DataFrame
+data = {'title': ['Inception'],
+        'overview': ['A thief who steals corporate secrets through the use of dream-sharing technology '
+                     'is given the inverse task of planting an idea into the mind of a CEO.']}
+movie = pd.DataFrame(data)
+
+```
+
+**Title**: `{python} movie['title'].values[0]`
+
+**Description**: `{python} movie['overview'].values[0]`

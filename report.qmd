@@ -8,7 +8,7 @@ format:
 ---
 
 # Title
-
+![Alt text](Coach%20Example/pics/plot_barbell_chart_v1.png)
 ```{python}
 import pandas as pd
 import matplotlib.pyplot as plt

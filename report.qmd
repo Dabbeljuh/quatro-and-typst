@@ -1,0 +1,173 @@
+---
+title: "Report"
+subtitle: "subtitle report"
+echo: False
+
+format:
+    pdf: default
+---
+
+# Title
+
+```{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib.colors as mcolors
+import textwrap
+
+
+# Sample data for the Facettenrad
+data = {
+    "Facets": [
+        "Originalität",
+        "Intellekt",
+        "Offenheit für Gefühle",
+        "Wissbegierde",
+        "Streben nach Erkenntnis",
+        "Offenheit für Kunst",
+        "Belesenheit",
+        "Urteilskraft",
+        "Offenheit für Aktivitäten",
+    ],
+    "Values": [5, 5, 4, 4, 3, 2, 3, 3, 3],
+    "Explanations": [
+        "raffiniert, einfallsreich, durchdacht",
+        "clever, überzeugt von eigner Auffassungsgabe",
+        "offener, bewusster Umgang mit Gefühlen",
+        "wissbegierig, hat Freude daran, etwas Neues zu erlernen",
+        "analysiert und reflektiert gerne",
+        "kunstinteressiert",
+        "interessiert an Literatur",
+        "Vermittler*in bei Problemen, objektiv, offen",
+        "weltoffen, kreativ, aktiv, interessiert",
+    ],
+}
+
+# Convert the data into a DataFrame
+df = pd.DataFrame(data)
+
+# Number of variables we're plotting
+num_vars = len(df)
+
+# Compute the angle of each facet on the polar chart
+angles = np.linspace(0, 2 * np.pi, num_vars, endpoint=False).tolist()
+angles += angles[:1]  # Repeat the first angle to close the circle
+
+# Set up the figure size
+fig = plt.figure(figsize=(12, 12))
+
+# Create an inset axes for the polar plot
+ax = fig.add_axes([0.15, 0.15, 0.7, 0.7], polar=True)  # Adjusted inset axes
+
+# Rotate the chart so the first entry is slightly more to the left
+ax.set_theta_offset(np.pi / 2.5)  # Adjust this value to change the rotation
+
+# Draw one axis per variable + add labels
+ax.set_theta_direction(-1)
+
+# Base color
+base_color = "#FF1919"  # Slightly darker red
+cmap = mcolors.LinearSegmentedColormap.from_list(
+    "custom_red_gradient", ["white", base_color]
+)
+
+# Normalize the values to map to colormap
+norm = mcolors.Normalize(vmin=0, vmax=3.5)
+
+# Create bars with gradient segments
+for i in range(num_vars):
+    value = df["Values"][i]
+    for j in range(1, value + 1):
+        bars = ax.bar(
+            angles[i],
+            1,
+            width=2 * np.pi / num_vars,
+            bottom=j - 1,  # Position the bar segment correctly
+            edgecolor="white",  # Customize the edge color
+            linestyle="-",  # Customize the line style
+            linewidth=1,  # Customize the line width
+            alpha=0.9,
+            color=cmap(norm(j)),  # Color the bars based on gradient
+        )
+
+
+# Function to wrap text without splitting words
+def wrap_text(text, width):
+    return "\n".join(textwrap.wrap(text, width=width, break_long_words=False))
+
+
+# Manually position the labels
+for i, angle in enumerate(angles[:-1]):
+    facet = df["Facets"][i].replace(" ", "~")  # Add non-breaking spaces
+    explanation = df["Explanations"][i]
+
+    # Combine facet and explanation with extra newlines
+    combined_text = f"$\\bf{{{facet}}}$\n\n{wrap_text(explanation, 25)}"
+
+    ax.annotate(
+        combined_text,
+        xy=(angle, 7.5),
+        xytext=(angle, 7),  # Adjusted this value to move the annotations up
+        textcoords="data",
+        ha="center",
+        va="center",
+        fontsize=10,
+        bbox=dict(
+            boxstyle="round,pad=0.3", edgecolor="none", facecolor="white", alpha=0.6
+        ),
+    )
+
+
+# Set the range for radial axis
+ax.set_ylim(0, 8)
+
+# Hide radial (straight) grid lines and labels
+ax.set_yticklabels([])  # Hide the radial labels and lines
+ax.set_yticks([])  # Hide the radial tick marks
+
+# Remove degree labels on theta axis
+ax.set_xticklabels([])  # Hide the theta tick labels
+
+# Optionally, you can also hide the radial lines by setting their visibility
+for spine in ax.spines.values():
+    spine.set_visible(False)
+
+# Customize the grid (keep circular lines visible if desired)
+ax.grid(
+    color="lightgrey", linestyle="-", linewidth=0.3, axis="y"
+)  # Customize circular grid lines
+ax.grid(False, axis="x")  # Hide straight radial grid lines
+
+# Extend the lines between segments further outward
+end_x = 8  # Increase this value to extend the lines further
+for i, angle in enumerate(angles[:-1]):
+    line_angle = angle + np.pi  # Adjust the angle to align with segment borders
+    ax.plot(
+        [line_angle, line_angle],
+        [0, end_x],
+        color="lightgrey",
+        linestyle="-",
+        linewidth=1,
+        alpha=0.6,
+    )
+
+# Add radial ticks manually to reflect 0-5 range
+ax.set_yticks([1, 2, 3, 4, 5])  # Define your tick positions based on the desired range
+
+# Add title
+fig.suptitle("Facettenrad: Offenheit", fontsize=13, y=0.90, x=0.477, fontweight="bold")
+
+# Show the plot
+plt.show()
+```
+
+random text here
+
+## Another subtitle
+
+Some more random text here
+
+### A third subtitle
+
+Ipsum lorem

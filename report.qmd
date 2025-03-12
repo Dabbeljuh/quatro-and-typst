@@ -4,6 +4,7 @@ title: "Reports With Quarto"
 subtitle: "Testing Stuff"
 date: "2025-03-12"
 echo: False
+css: styles.css
 
 format:
     pdf: default
@@ -174,12 +175,14 @@ random text here
 
 ![Left aligned Figure](Coach%20Example/pics\plot_diverging_barplot_vs_average.png){fig-align="left" width="453"}
 
-{{< test >}}
-
 ## Another subtitle
 
 Some more random text here
 
 ### A third subtitle
 
-Ipsum lorem
+::: {layout="[[30, 70], [100]]"}
+This is a test about line up pictures next to text. This is a test about line up pictures next to text. This is a test about line up pictures next to text.
+
+![Alt text](Coach%20Example/pics/plot_boxplot.png){fig-align="right" width="576"}
+:::

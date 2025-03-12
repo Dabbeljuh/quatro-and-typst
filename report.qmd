@@ -1,10 +1,14 @@
 ---
-title: "Report"
-subtitle: "subtitle report"
+author: "J. W."
+title: "Reports With Quarto"
+subtitle: "Testing Stuff"
+date: "2025-03-12"
 echo: False
 
 format:
     pdf: default
+
+# format: revealjs #rendering presentation
 ---
 
 # Title

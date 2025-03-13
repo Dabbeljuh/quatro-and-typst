@@ -1,0 +1,99 @@
+---
+title: "Coach Reports"
+format: html
+
+echo: false
+---
+
+```{python}
+#|tags: [parameters]
+
+# ['Coach A' 'Coach B' 'Coach C' 'Coach D' 'Coach E' 'Coach F' 'Coach G'
+# 'Coach T' 'Coach H' 'Coach I']
+
+num_of_figures = 5
+coach_name = 'Coach T'
+```
+
+```{python}
+import pandas as pd
+
+df = pd.read_csv('./data/csv_for_figure_examples.csv')
+
+def generate_summary(coach_name, df):
+    # Filter data for the specific coach
+    coach_data = df[df["coach"] == coach_name]
+    summary = {}
+
+    # Define question columns
+    question_columns = [
+        col
+        for col in df.columns
+        if col.endswith(("_1", "_2", "_3", "_4", "_5", "_6", "_7", "_8"))
+    ]
+
+    # Only process question columns if they exist
+    if question_columns:
+        for col in question_columns:
+            low_scores = coach_data[coach_data[col] <= 2][col]
+            if not low_scores.empty:
+                summary[col] = low_scores.values.tolist()
+
+    # Define summary columns and process them
+    summary_columns = [col for col in df.columns if col.endswith("_summary")] + [
+        "gesamtbewertung"
+    ]
+    for col in summary_columns:
+        summary[col] = (coach_data[col].mean(), coach_data[col].notna().sum())
+
+    # Add total data points
+    summary["total_data_points"] = len(coach_data)
+
+    return summary
+
+column_label_mapping = {
+    "rbd_summary": "Rahmenbedingungen",
+    "auf_summary": "Auftragsklärung",
+    "zus_summary": "Zusammenarbeit",
+    "erg_summary": "Erreicht",
+    "bwr_summary": "Bewertung",
+    "gesamtbewertung": "Gesamtbewertung",
+}
+selected_categories = [
+    "rbd_summary",
+    "auf_summary",
+    "zus_summary",
+    "erg_summary",
+    "bwr_summary",
+    "gesamtbewertung",
+]
+```
+
+```{python}
+average_score = df[df['coach'] == coach_name]['gesamtbewertung'].mean()
+```
+# Report for `{python} coach_name`
+
+
+
+## Figure 1
+```{python}
+print(f"{coach_name} has an average score of {average_score:.2f}")
+
+```
+
+
+## Figure 2
+
+testing 3
+
+## Figure 3
+
+
+## Figure 4
+
+
+## Figure 5
+
+
+

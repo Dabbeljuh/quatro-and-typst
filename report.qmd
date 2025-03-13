@@ -6,8 +6,11 @@ date: "2025-03-12"
 echo: False
 css: styles.css
 
-format: pdf
+format: 
+    pdf: default
+    # docx: default
 
+toc: true
 # format: revealjs #rendering presentation
 ---
 
@@ -213,3 +216,17 @@ movie = pd.DataFrame(data)
 **Title**: `{python} movie['title'].values[0]`
 
 **Description**: `{python} movie['overview'].values[0]`
+
+{{< pagebreak >}}
+
+## Text in columns
+:::: {layout="[0.33, 0.66]"}
+
+::: {#first-column}
+Here is some text in the first column.
+:::
+::: {#second-column .flushright data-latex=""}
+Here is some text in the second column.
+:::
+
+::::

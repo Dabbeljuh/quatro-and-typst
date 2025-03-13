@@ -1,0 +1,217 @@
+---
+format: dashboard
+title: "My new dashboard"
+
+echo: false
+---
+
+
+```{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+
+df = pd.read_csv("./data/csv_for_figure_examples.csv")
+
+def generate_summary(coach_name, df):
+    # Filter data for the specific coach
+    coach_data = df[df["coach"] == coach_name]
+    summary = {}
+
+    # Define question columns
+    question_columns = [
+        col
+        for col in df.columns
+        if col.endswith(("_1", "_2", "_3", "_4", "_5", "_6", "_7", "_8"))
+    ]
+
+    # Only process question columns if they exist
+    if question_columns:
+        for col in question_columns:
+            low_scores = coach_data[coach_data[col] <= 2][col]
+            if not low_scores.empty:
+                summary[col] = low_scores.values.tolist()
+
+    # Define summary columns and process them
+    summary_columns = [col for col in df.columns if col.endswith("_summary")] + [
+        "gesamtbewertung"
+    ]
+    for col in summary_columns:
+        summary[col] = (coach_data[col].mean(), coach_data[col].notna().sum())
+
+    # Add total data points
+    summary["total_data_points"] = len(coach_data)
+
+    return summary
+
+column_label_mapping = {
+    "rbd_summary": "Rahmenbedingungen",
+    "auf_summary": "Auftragsklärung",
+    "zus_summary": "Zusammenarbeit",
+    "erg_summary": "Erreicht",
+    "bwr_summary": "Bewertung",
+    "gesamtbewertung": "Gesamtbewertung",
+}
+selected_categories = [
+    "rbd_summary",
+    "auf_summary",
+    "zus_summary",
+    "erg_summary",
+    "bwr_summary",
+    "gesamtbewertung",
+]
+
+summary = generate_summary('Coach T', df)
+```
+
+# Figures 1
+
+## Row 1
+
+```{python}
+#| content: valuebox
+#| title: "Coach Name:"
+
+dict(
+    icon = "emoji-neutral-fill",
+    color = "secondary",
+    value = "Coach T"
+)
+```
+
+## Column 1
+
+```{python}
+def plot_summary_v1(summary, coach_name):
+    summary_scores = {
+        col: score[0] for col, score in summary.items() if isinstance(score, tuple)
+    }
+    data_points = summary["total_data_points"]
+
+    # Apply the mapping to your column names
+    mapped_summary_scores = {
+        column_label_mapping.get(col, col): score
+        for col, score in summary_scores.items()
+    }
+
+    fig, ax = plt.subplots(figsize=(10, 5))
+    bars = ax.bar(
+        mapped_summary_scores.keys(),
+        mapped_summary_scores.values(),
+        color="skyblue",
+        edgecolor="black",
+    )
+
+    # Add data labels
+    for bar in bars:
+        yval = bar.get_height()
+        ax.text(
+            bar.get_x() + bar.get_width() / 2,
+            yval - 0.5,
+            f"{yval:.2f}",
+            ha="center",
+            va="bottom",
+            color="black",
+        )
+
+    ax.set_title(
+        f"Zusammenfassung für {coach_name} ({data_points} Bewertungen)"
+    )  # ax.set_xlabel('Summary Columns')
+    ax.set_ylabel("durschnittliche Bewertung")
+    ax.set_ylim(0, 5)
+
+    plt.close(fig)  # Close the figure to prevent it from displaying twice
+
+    return fig
+
+plot_summary_v1(summary, 'Coach T')
+
+```
+
+```{python}
+
+def plot_diverging_barplot_vs_average(df, coach_name):
+    coach_data = df[df["coach"] == coach_name][selected_categories].mean(
+        numeric_only=True
+    )
+    other_coaches_avg = df[df["coach"] != coach_name][selected_categories].mean(
+        numeric_only=True
+    )
+    deviation = coach_data - other_coaches_avg
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.barplot(
+        x=deviation.values,
+        y=deviation.index,
+        palette="coolwarm",
+        hue=deviation.index,
+        dodge=False,
+        ax=ax,
+        legend=False,
+    )
+    ax.axvline(0, color="black", linestyle="--")
+    ax.set_title(f"{coach_name} Deviation from Average")
+    ax.set_xlabel("Deviation from Average Rating")
+    ax.set_ylabel("Categories")
+    ax.set_yticks(range(len(deviation.index)))
+    ax.set_yticklabels(deviation.index)
+
+    plt.close(fig)
+    return fig
+
+plot_diverging_barplot_vs_average(df, 'Coach T')
+```
+
+## Row
+```{python}
+#| title: "testing titles"
+
+
+def plot_boxplot(df, coach_name):
+    coach_data = df[df["coach"] == coach_name][selected_categories]
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.boxplot(data=coach_data, ax=ax)
+    ax.set_title(f"Rating Distribution for {coach_name}")
+    ax.set_ylabel("Rating")
+    ax.set_xticks(range(len(coach_data.columns)))
+    ax.set_xticklabels(coach_data.columns, rotation=45)
+
+    plt.close(fig)
+    return fig
+
+plot_boxplot(df, 'Coach T')
+```
+
+
+# Figures 2
+
+## Row 1
+
+```{python}
+#| content: valuebox
+#| title: "Coach Name:"
+
+dict(
+    icon = "emoji-neutral-fill",
+    color = "secondary",
+    value = "Coach T"
+)
+```
+
+```{python}
+
+def plot_boxplot(df, coach_name):
+    coach_data = df[df["coach"] == coach_name][selected_categories]
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.boxplot(data=coach_data, ax=ax)
+    ax.set_title(f"Rating Distribution for {coach_name}")
+    ax.set_ylabel("Rating")
+    ax.set_xticks(range(len(coach_data.columns)))
+    ax.set_xticklabels(coach_data.columns, rotation=45)
+
+    plt.close(fig)
+    return fig
+
+plot_boxplot(df, 'Coach T')
+```

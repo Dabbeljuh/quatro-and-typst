@@ -1,0 +1,299 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "---\n",
+        "format: dashboard\n",
+        "title: \"My new dashboard\"\n",
+        "\n",
+        "echo: false\n",
+        "---"
+      ],
+      "id": "a31b0081"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "import pandas as pd\n",
+        "import matplotlib.pyplot as plt\n",
+        "import numpy as np\n",
+        "import seaborn as sns\n",
+        "\n",
+        "df = pd.read_csv(\"./data/csv_for_figure_examples.csv\")\n",
+        "\n",
+        "def generate_summary(coach_name, df):\n",
+        "    # Filter data for the specific coach\n",
+        "    coach_data = df[df[\"coach\"] == coach_name]\n",
+        "    summary = {}\n",
+        "\n",
+        "    # Define question columns\n",
+        "    question_columns = [\n",
+        "        col\n",
+        "        for col in df.columns\n",
+        "        if col.endswith((\"_1\", \"_2\", \"_3\", \"_4\", \"_5\", \"_6\", \"_7\", \"_8\"))\n",
+        "    ]\n",
+        "\n",
+        "    # Only process question columns if they exist\n",
+        "    if question_columns:\n",
+        "        for col in question_columns:\n",
+        "            low_scores = coach_data[coach_data[col] <= 2][col]\n",
+        "            if not low_scores.empty:\n",
+        "                summary[col] = low_scores.values.tolist()\n",
+        "\n",
+        "    # Define summary columns and process them\n",
+        "    summary_columns = [col for col in df.columns if col.endswith(\"_summary\")] + [\n",
+        "        \"gesamtbewertung\"\n",
+        "    ]\n",
+        "    for col in summary_columns:\n",
+        "        summary[col] = (coach_data[col].mean(), coach_data[col].notna().sum())\n",
+        "\n",
+        "    # Add total data points\n",
+        "    summary[\"total_data_points\"] = len(coach_data)\n",
+        "\n",
+        "    return summary\n",
+        "\n",
+        "column_label_mapping = {\n",
+        "    \"rbd_summary\": \"Rahmenbedingungen\",\n",
+        "    \"auf_summary\": \"Auftragsklärung\",\n",
+        "    \"zus_summary\": \"Zusammenarbeit\",\n",
+        "    \"erg_summary\": \"Erreicht\",\n",
+        "    \"bwr_summary\": \"Bewertung\",\n",
+        "    \"gesamtbewertung\": \"Gesamtbewertung\",\n",
+        "}\n",
+        "selected_categories = [\n",
+        "    \"rbd_summary\",\n",
+        "    \"auf_summary\",\n",
+        "    \"zus_summary\",\n",
+        "    \"erg_summary\",\n",
+        "    \"bwr_summary\",\n",
+        "    \"gesamtbewertung\",\n",
+        "]\n",
+        "\n",
+        "summary = generate_summary('Coach T', df)"
+      ],
+      "id": "68bc5929",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "# Figures 1\n",
+        "\n",
+        "## Row 1\n"
+      ],
+      "id": "9dc479a8"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "content": "valuebox",
+        "title": "Coach Name:"
+      },
+      "source": [
+        "dict(\n",
+        "    icon = \"emoji-neutral-fill\",\n",
+        "    color = \"secondary\",\n",
+        "    value = \"Coach T\"\n",
+        ")"
+      ],
+      "id": "e3111b3f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Column 1\n"
+      ],
+      "id": "d52072f9"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "def plot_summary_v1(summary, coach_name):\n",
+        "    summary_scores = {\n",
+        "        col: score[0] for col, score in summary.items() if isinstance(score, tuple)\n",
+        "    }\n",
+        "    data_points = summary[\"total_data_points\"]\n",
+        "\n",
+        "    # Apply the mapping to your column names\n",
+        "    mapped_summary_scores = {\n",
+        "        column_label_mapping.get(col, col): score\n",
+        "        for col, score in summary_scores.items()\n",
+        "    }\n",
+        "\n",
+        "    fig, ax = plt.subplots(figsize=(10, 5))\n",
+        "    bars = ax.bar(\n",
+        "        mapped_summary_scores.keys(),\n",
+        "        mapped_summary_scores.values(),\n",
+        "        color=\"skyblue\",\n",
+        "        edgecolor=\"black\",\n",
+        "    )\n",
+        "\n",
+        "    # Add data labels\n",
+        "    for bar in bars:\n",
+        "        yval = bar.get_height()\n",
+        "        ax.text(\n",
+        "            bar.get_x() + bar.get_width() / 2,\n",
+        "            yval - 0.5,\n",
+        "            f\"{yval:.2f}\",\n",
+        "            ha=\"center\",\n",
+        "            va=\"bottom\",\n",
+        "            color=\"black\",\n",
+        "        )\n",
+        "\n",
+        "    ax.set_title(\n",
+        "        f\"Zusammenfassung für {coach_name} ({data_points} Bewertungen)\"\n",
+        "    )  # ax.set_xlabel('Summary Columns')\n",
+        "    ax.set_ylabel(\"durschnittliche Bewertung\")\n",
+        "    ax.set_ylim(0, 5)\n",
+        "\n",
+        "    plt.close(fig)  # Close the figure to prevent it from displaying twice\n",
+        "\n",
+        "    return fig\n",
+        "\n",
+        "plot_summary_v1(summary, 'Coach T')"
+      ],
+      "id": "c7fa530a",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "def plot_diverging_barplot_vs_average(df, coach_name):\n",
+        "    coach_data = df[df[\"coach\"] == coach_name][selected_categories].mean(\n",
+        "        numeric_only=True\n",
+        "    )\n",
+        "    other_coaches_avg = df[df[\"coach\"] != coach_name][selected_categories].mean(\n",
+        "        numeric_only=True\n",
+        "    )\n",
+        "    deviation = coach_data - other_coaches_avg\n",
+        "\n",
+        "    fig, ax = plt.subplots(figsize=(10, 6))\n",
+        "    sns.barplot(\n",
+        "        x=deviation.values,\n",
+        "        y=deviation.index,\n",
+        "        palette=\"coolwarm\",\n",
+        "        hue=deviation.index,\n",
+        "        dodge=False,\n",
+        "        ax=ax,\n",
+        "        legend=False,\n",
+        "    )\n",
+        "    ax.axvline(0, color=\"black\", linestyle=\"--\")\n",
+        "    ax.set_title(f\"{coach_name} Deviation from Average\")\n",
+        "    ax.set_xlabel(\"Deviation from Average Rating\")\n",
+        "    ax.set_ylabel(\"Categories\")\n",
+        "    ax.set_yticks(range(len(deviation.index)))\n",
+        "    ax.set_yticklabels(deviation.index)\n",
+        "\n",
+        "    plt.close(fig)\n",
+        "    return fig\n",
+        "\n",
+        "plot_diverging_barplot_vs_average(df, 'Coach T')"
+      ],
+      "id": "c271e3da",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Row"
+      ],
+      "id": "b4063706"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "title": "testing titles"
+      },
+      "source": [
+        "def plot_boxplot(df, coach_name):\n",
+        "    coach_data = df[df[\"coach\"] == coach_name][selected_categories]\n",
+        "    fig, ax = plt.subplots(figsize=(10, 6))\n",
+        "    sns.boxplot(data=coach_data, ax=ax)\n",
+        "    ax.set_title(f\"Rating Distribution for {coach_name}\")\n",
+        "    ax.set_ylabel(\"Rating\")\n",
+        "    ax.set_xticks(range(len(coach_data.columns)))\n",
+        "    ax.set_xticklabels(coach_data.columns, rotation=45)\n",
+        "\n",
+        "    plt.close(fig)\n",
+        "    return fig\n",
+        "\n",
+        "plot_boxplot(df, 'Coach T')"
+      ],
+      "id": "fe503e18",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "# Figures 2\n",
+        "\n",
+        "## Row 1\n"
+      ],
+      "id": "49832f89"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "content": "valuebox",
+        "title": "Coach Name:"
+      },
+      "source": [
+        "dict(\n",
+        "    icon = \"emoji-neutral-fill\",\n",
+        "    color = \"secondary\",\n",
+        "    value = \"Coach T\"\n",
+        ")"
+      ],
+      "id": "3f5f2671",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "def plot_boxplot(df, coach_name):\n",
+        "    coach_data = df[df[\"coach\"] == coach_name][selected_categories]\n",
+        "    fig, ax = plt.subplots(figsize=(10, 6))\n",
+        "    sns.boxplot(data=coach_data, ax=ax)\n",
+        "    ax.set_title(f\"Rating Distribution for {coach_name}\")\n",
+        "    ax.set_ylabel(\"Rating\")\n",
+        "    ax.set_xticks(range(len(coach_data.columns)))\n",
+        "    ax.set_xticklabels(coach_data.columns, rotation=45)\n",
+        "\n",
+        "    plt.close(fig)\n",
+        "    return fig\n",
+        "\n",
+        "plot_boxplot(df, 'Coach T')"
+      ],
+      "id": "06a11a13",
+      "execution_count": null,
+      "outputs": []
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "name": "python3",
+      "language": "python",
+      "display_name": "Python 3 (ipykernel)",
+      "path": "C:\\Users\\JosephWiesemeier\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\LocalCache\\local-packages\\share\\jupyter\\kernels\\python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}

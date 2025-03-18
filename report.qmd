@@ -7,11 +7,15 @@ echo: False
 css: styles.css
 
 format: 
-    pdf: default
+    pdf:
+        documentclass: report 
+        margin-left: 30mm
+        margin-right: 30mm
     # docx: default
 
 toc: true
 # format: revealjs #rendering presentation
+
 ---
 
 # Report from already generated Image
@@ -184,21 +188,18 @@ Some more random text here
 ### A third subtitle
 
 ::: {layout="[[30, 70], [100]]"}
-
 This is a test about line up pictures next to text. This is a test about line up pictures next to text. This is a test about line up pictures next to text.
 
 ![Alt text](Coach%20Example/pics/plot_boxplot.png){fig-align="right" width="400"}
-
 :::
 
-
 ### Python Testing
+
 ```{python}
 #| echo: true
 test = 'PYTHON TESTING'
 print(test)
 ```
-
 
 Python Inline Example
 
@@ -220,13 +221,30 @@ movie = pd.DataFrame(data)
 {{< pagebreak >}}
 
 ## Text in columns
-:::: {layout="[0.33, 0.66]"}
 
+:::::: {layout="[0.4,0.2, 0.4]"}
 ::: {#first-column}
-Here is some text in the first column.
-:::
-::: {#second-column .flushright data-latex=""}
-Here is some text in the second column.
+Here is some text in the first column. Here is some text in the first column. Here is some text in the first column. Here is some text in the first column. Here is some text in the first column.
 :::
 
-::::
+::: {#second-coulmn}
+:::
+
+::: {#third-column .flushright data-latex=""}
+Here is some text in the second column. Here is some text in the second column. Here is some text in the second column. Here is some text in the second column. Here is some text in the second column.
+:::
+::::::
+
+| Col1 | Col2 | Col3 |
+|------|------|------|
+|      |      |      |
+|      |      |      |
+|      |      |      |
+
+------------------------------------------------------------------------
+
+::: {.callout-important appearance="simple"}
+## testing stuff
+
+testing the callout important
+:::

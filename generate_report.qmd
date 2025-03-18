@@ -1,35 +1,25 @@
 ---
-title: "Dynamic Report for {{coach_name}}"
-params:
-  coach_name: "Default Coach"
-execute:
-  kernel: python3
-format:
-  html: default
+title: "Coach Reports"
+format: 
+    pdf:
+        documentclass: report
+        output-file: "testing_parameters.pdf"
+echo: false
 ---
 
 ```{python}
-#| tags: [parameters]
-# Define parameters (Quarto will override these during rendering)
-coach_name = "Default Coach"
-``` 
+#|tags: [parameters]
 
-```{python}
-#| echo: true
-# Access the parameter and test it
-print(f"Coach Name: {coach_name}")
+# ['Coach A' 'Coach B' 'Coach C' 'Coach D' 'Coach E' 'Coach F' 'Coach G'
+# 'Coach T' 'Coach H' 'Coach I']
+
+# just testing parameters
+number = 5
+
+# Name des Coaches für Report
+coach_name = 'Coach T'
 ```
 
-```{python}
-#| echo: false
-# Generate a dynamic heading
-print(f"# Report for {coach_name}")
-```
-
-
-# Report for {python} coach_name
-## testing `{python} coach_name`
-but in normal text it works? `{python} coach_name`
 
 ```{python}
 import pandas as pd
@@ -88,6 +78,9 @@ selected_categories = [
 ```{python}
 average_score = df[df['coach'] == coach_name]['gesamtbewertung'].mean()
 ```
+# Report for `{python} coach_name`
+
+
 
 ## Test 1
 ```{python}
@@ -103,10 +96,10 @@ print(f"The number is {number}")
 
 ## Figure 1
 
-This is `{python} coach_name` testing.
 
-## Figure 3 
 
+
+## Figure 5
 
 
 

@@ -1,0 +1,58 @@
+---
+title: Report for Coaches 
+# subtitle: Subtitle 
+date: "2025-03-18"
+
+format: 
+  # pdf: default
+  html: 
+    toc: true
+    toc-location: right
+    smooth-scroll: true
+
+
+echo: false
+---
+
+```{python}
+#| tags: [parameters]
+
+coach_name = 'Default Coach'
+```
+
+# Begrüßung
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dictum nisl suscipit ante porta, a sodales ligula sollicitudin. Sed aliquam ullamcorper est vitae iaculis. Nullam ornare sit amet magna non varius. Donec commodo sollicitudin accumsan. Aenean tempor nunc quis lacus pellentesque, ac pharetra neque tempus. Donec tempor molestie ipsum ullamcorper facilisis. Suspendisse non orci sit amet libero lacinia faucibus.
+
+Aenean mi eros, aliquam vitae tellus eget, tincidunt semper justo. In tincidunt gravida suscipit. In id est sed mauris posuere scelerisque. Curabitur scelerisque molestie elementum. Aliquam aliquam urna turpis, at feugiat leo posuere gravida. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Morbi maximus, urna congue fermentum porta, dolor mi auctor diam, at pharetra nunc velit sed arcu. Maecenas nec lectus a est facilisis interdum in et eros. Nulla facilisi. Maecenas facilisis neque ut accumsan vehicula. Donec accumsan pellentesque erat eu rhoncus. Pellentesque porta ipsum id elit interdum tincidunt. Ut turpis massa, facilisis sit amet ante vitae, suscipit dapibus nisi.
+
+Sed vitae neque eget urna consectetur dictum. Nam placerat ipsum vitae ante rutrum, nec placerat lorem blandit. Sed lacinia leo non felis interdum auctor. Praesent feugiat, arcu vitae egestas luctus, magna nisl condimentum magna, sed commodo nisi nibh vel elit. Sed ligula est, rutrum non commodo mattis, tincidunt sit amet elit. Nunc semper nunc fermentum metus cursus, aliquam dapibus ipsum viverra. Nam blandit ante quis elit bibendum, a hendrerit quam commodo. Curabitur dictum aliquam urna in tristique. Donec suscipit nunc at est interdum, non finibus purus egestas.
+
+{{< pagebreak >}}
+
+Aliquam et felis nisi. Integer dapibus odio et convallis venenatis. Fusce sed urna ac ligula mollis blandit eu eleifend nisi. Cras congue urna non nibh lacinia hendrerit. Morbi bibendum varius lorem eget blandit. Suspendisse mauris libero, laoreet maximus eros eu, mollis ornare turpis. Aliquam tristique magna nec massa luctus, vitae suscipit dui aliquam.
+
+Maecenas sollicitudin, metus non molestie luctus, diam nisl hendrerit arcu, et mattis risus sem nec leo. Nunc maximus, ex vel laoreet pharetra, lorem dolor imperdiet odio, cursus suscipit sapien mauris id purus. Suspendisse commodo dictum ligula sed hendrerit. Donec sollicitudin sem non elementum sagittis. Sed venenatis mauris ut quam sollicitudin placerat. Curabitur posuere, purus et feugiat malesuada, urna lectus convallis libero, ac iaculis arcu sapien quis nibh. Suspendisse eget suscipit mauris. Nam et vehicula augue. Cras tincidunt a ante vitae sollicitudin. Nunc a sollicitudin turpis. Curabitur eu eros odio. Phasellus eu porta lacus. Vestibulum sagittis lacus arcu, a bibendum augue lacinia eu. Pellentesque a turpis vel turpis viverra laoreet a porttitor risus. Donec venenatis nulla ante, ac condimentum massa bibendum sed.
+
+{{< pagebreak >}}
+
+## Bewertungen
+
+![Übersicht für die durchschnittlichen Bewertungen.](Coach%20Example/pics/plot_summary_v1.png){width=90%}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dictum nisl suscipit ante porta, a sodales ligula sollicitudin. Sed aliquam ullamcorper est vitae iaculis. Nullam ornare sit amet magna non varius. Donec commodo sollicitudin accumsan. Aenean tempor nunc quis lacus pellentesque, ac pharetra neque tempus. Donec tempor molestie ipsum ullamcorper facilisis. Suspendisse non orci sit amet libero lacinia faucibus.
+
+{{< pagebreak >}}
+
+## Offenheit
+
+### Allgemeines
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dictum nisl suscipit ante porta, a sodales ligula sollicitudin. Sed aliquam ullamcorper est vitae iaculis. Nullam ornare sit amet magna non varius. Donec commodo sollicitudin accumsan. Aenean tempor nunc quis lacus pellentesque, ac pharetra neque tempus. Donec tempor molestie ipsum ullamcorper facilisis. Suspendisse non orci sit amet libero lacinia faucibus.
+
+
+### Führen
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris dictum nisl suscipit ante porta, a sodales ligula sollicitudin. Sed aliquam ullamcorper est vitae iaculis. Nullam ornare sit amet magna non varius. Donec commodo sollicitudin accumsan. Aenean tempor nunc quis lacus pellentesque, ac pharetra neque tempus. Donec tempor molestie ipsum ullamcorper facilisis. Suspendisse non orci sit amet libero lacinia faucibus.
+
+
+### Team
+

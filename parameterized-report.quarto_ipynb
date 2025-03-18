@@ -1,0 +1,197 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "---\n",
+        "title: \"Dynamic Report for {{coach_name}}\"\n",
+        "params:\n",
+        "  coach_name: \"Default Coach\"\n",
+        "execute:\n",
+        "  kernel: python3\n",
+        "format:\n",
+        "  html: default\n",
+        "---"
+      ],
+      "id": "a0b72925"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "tags": [
+          "parameters"
+        ]
+      },
+      "source": [
+        "# Define parameters (Quarto will override these during rendering)\n",
+        "coach_name = \"Default Coach\""
+      ],
+      "id": "1da3e63f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: true\n",
+        "# Access the parameter and test it\n",
+        "print(f\"Coach Name: {coach_name}\")"
+      ],
+      "id": "fe9e2649",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n",
+        "# Generate a dynamic heading\n",
+        "print(f\"# Report for {coach_name}\")"
+      ],
+      "id": "462b3690",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "# Report for {python} coach_name\n",
+        "## testing `{python} coach_name`\n",
+        "but in normal text it works? `{python} coach_name`\n"
+      ],
+      "id": "8fa66f37"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "import pandas as pd\n",
+        "\n",
+        "df = pd.read_csv('./data/csv_for_figure_examples.csv')\n",
+        "\n",
+        "def generate_summary(coach_name, df):\n",
+        "    # Filter data for the specific coach\n",
+        "    coach_data = df[df[\"coach\"] == coach_name]\n",
+        "    summary = {}\n",
+        "\n",
+        "    # Define question columns\n",
+        "    question_columns = [\n",
+        "        col\n",
+        "        for col in df.columns\n",
+        "        if col.endswith((\"_1\", \"_2\", \"_3\", \"_4\", \"_5\", \"_6\", \"_7\", \"_8\"))\n",
+        "    ]\n",
+        "\n",
+        "    # Only process question columns if they exist\n",
+        "    if question_columns:\n",
+        "        for col in question_columns:\n",
+        "            low_scores = coach_data[coach_data[col] <= 2][col]\n",
+        "            if not low_scores.empty:\n",
+        "                summary[col] = low_scores.values.tolist()\n",
+        "\n",
+        "    # Define summary columns and process them\n",
+        "    summary_columns = [col for col in df.columns if col.endswith(\"_summary\")] + [\n",
+        "        \"gesamtbewertung\"\n",
+        "    ]\n",
+        "    for col in summary_columns:\n",
+        "        summary[col] = (coach_data[col].mean(), coach_data[col].notna().sum())\n",
+        "\n",
+        "    # Add total data points\n",
+        "    summary[\"total_data_points\"] = len(coach_data)\n",
+        "\n",
+        "    return summary\n",
+        "\n",
+        "column_label_mapping = {\n",
+        "    \"rbd_summary\": \"Rahmenbedingungen\",\n",
+        "    \"auf_summary\": \"Auftragsklärung\",\n",
+        "    \"zus_summary\": \"Zusammenarbeit\",\n",
+        "    \"erg_summary\": \"Erreicht\",\n",
+        "    \"bwr_summary\": \"Bewertung\",\n",
+        "    \"gesamtbewertung\": \"Gesamtbewertung\",\n",
+        "}\n",
+        "selected_categories = [\n",
+        "    \"rbd_summary\",\n",
+        "    \"auf_summary\",\n",
+        "    \"zus_summary\",\n",
+        "    \"erg_summary\",\n",
+        "    \"bwr_summary\",\n",
+        "    \"gesamtbewertung\",\n",
+        "]"
+      ],
+      "id": "417af75c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "average_score = df[df['coach'] == coach_name]['gesamtbewertung'].mean()"
+      ],
+      "id": "de81c9b1",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Test 1"
+      ],
+      "id": "3acd1cdd"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "print(f\"{coach_name} has an average score of {average_score:.2f}\")"
+      ],
+      "id": "b1cd9ba9",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Test parmater number\n"
+      ],
+      "id": "c98031eb"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "print(f\"The number is {number}\")"
+      ],
+      "id": "5d07a761",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "## Figure 1\n",
+        "\n",
+        "This is `{python} coach_name` testing.\n",
+        "\n",
+        "## Figure 3 \n"
+      ],
+      "id": "449c7ad9"
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "name": "python3",
+      "language": "python",
+      "display_name": "Python 3 (ipykernel)",
+      "path": "C:\\Users\\JosephWiesemeier\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\LocalCache\\local-packages\\share\\jupyter\\kernels\\python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}
